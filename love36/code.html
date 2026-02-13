@@ -7,11 +7,13 @@
     <meta name="Keywords" content="" />
     <meta name="Description" content="" />
     <meta charset="UTF-8" />
+
     <script
       type="text/javascript"
       src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=nerv7xfxdG6nBVqZRyT325qeaKjdaKGASGZ0JVMlWO3NUJeYxmRp4UY6VZY8Wa4trlm6r1SkTYqlrJ7q2w-1Ew"
       charset="UTF-8"
     ></script>
+
     <style>
       html,
       body {
@@ -184,7 +186,7 @@
             this.position.x - size / 2,
             this.position.y - size / 2,
             size,
-            size
+            size,
           );
         };
         return Particle;
@@ -270,7 +272,7 @@
               50 * Math.cos(2 * t) -
               20 * Math.cos(3 * t) -
               10 * Math.cos(4 * t) +
-              25
+              25,
           );
         }
 
@@ -331,7 +333,7 @@
                 20 * Math.cos(2 * t) -
                 8 * Math.cos(3 * t) -
                 4 * Math.cos(4 * t) +
-                5
+                5,
             );
           }
 
@@ -342,7 +344,7 @@
                 100 * Math.cos(2 * t) -
                 40 * Math.cos(3 * t) -
                 4 * Math.cos(4 * t) +
-                30
+                30,
             );
           }
 
@@ -355,7 +357,7 @@
               canvas.width / 2 + pos.x,
               canvas.height / 2 - pos.y,
               dir.x,
-              -dir.y
+              -dir.y,
             );
           }
 
@@ -367,7 +369,7 @@
               canvas.width / 2 + posx.x,
               canvas.height / 2 - posx.y,
               dirx.x,
-              -dirx.y
+              -dirx.y,
             );
           }
 
@@ -379,7 +381,7 @@
               canvas.width / 2 + posx.x,
               canvas.height / 2 - posx.y,
               dirx.x,
-              -dirx.y
+              -dirx.y,
             );
           }
 
@@ -402,6 +404,41 @@
           render();
         }, 10);
       })(document.getElementById("pinkboard"));
+
+      function setupMusic() {
+        const music = document.getElementById("backgroundMusic");
+
+        const isMusicPlaying = localStorage.getItem("musicPlaying") === "true";
+        const musicCurrentTime = localStorage.getItem("musicCurrentTime") || 0;
+
+        if (isMusicPlaying) {
+          music.currentTime = parseFloat(musicCurrentTime);
+        }
+
+        music.addEventListener("play", () => {
+          localStorage.setItem("musicPlaying", "true");
+        });
+
+        music.addEventListener("pause", () => {
+          localStorage.setItem("musicPlaying", "false");
+        });
+
+        setInterval(() => {
+          localStorage.setItem("musicCurrentTime", music.currentTime);
+        }, 1000);
+
+        document.addEventListener("click", function startMusic() {
+          music.play().catch((error) => {
+            console.log("Autoplay prevented", error);
+          });
+          document.removeEventListener("click", startMusic);
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", setupMusic);
     </script>
+    <audio id="backgroundMusic" loop>
+      <source src="assets/blue.mp3" type="audio/mpeg" />
+    </audio>
   </body>
 </html>
